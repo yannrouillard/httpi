@@ -162,6 +162,7 @@ module HTTPI
       if response &&  HTTPI::Response::RedirectResponseCodes.member?(response.code) && request.follow_redirect?
         request.url = URI.join(request.url, response.headers['location'])
         log("Following redirect: '#{request.url}'.")
+        method = :get if HTTPI::Response::RedirectToGetResponseCodes.member?(response.code)
         return request(method, request, adapter)
       end
 

@@ -16,6 +16,9 @@ module HTTPI
     SuccessfulResponseCodes = 200..299
     # HTTP response codes considered to be a redirect.
     RedirectResponseCodes = [301, 302, 303, 307, 308]
+    # HTTP redirect response codes for which a request
+    # must or may changed to a get request to the redirect location
+    RedirectToGetResponseCodes = [303]
 
     # Initializer expects an HTTP response +code+, +headers+ and +body+.
     def initialize(code, headers, body)

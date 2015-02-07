@@ -268,6 +268,21 @@ describe HTTPI do
 
       client.request(:custom, request, :httpclient)
     end
+
+    it 'issues a GET on the redirect location after a 303 status code' do
+      request.follow_redirect = true
+      redirect_location = 'http://example.com/foo/bar'
+
+      redirect = HTTPI::Response.new(303, {'location' => redirect_location}, 'Moved')
+      response = HTTPI::Response.new(200, {}, 'success')
+
+      httpclient.any_instance.expects(:request).with(:post).returns(redirect)
+      httpclient.any_instance.expects(:request).with(:get).returns(response)
+      request.expects(:url=).with(URI.parse('http://example.com/foo/bar'))
+
+      client.request(:post, request, :httpclient)
+    end
+
   end
 
   HTTPI::REQUEST_METHODS.each do |method|
